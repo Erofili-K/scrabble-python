@@ -1,0 +1,6 @@
+player1 20
+palyer2 30
+player3 50
+player4 20
+player5 100
+player6 35
