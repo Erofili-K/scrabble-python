@@ -47,18 +47,22 @@ class Human(Player):
         if self.word == 'π' or self.word == 'Π':  # πασο
             return 'Π'
         else:
-            for i in self.word:  # αν χρησιμοποιει μονο γραμματα π υπαρχουν στην λιστα τοτε η λεξη ειναι valid (v=1)
-                if i in alist:
-                    self.v=1
-                else:  # αν καποιο γραμμα της λεξης δν ανηκει στην λιστα τοτε (v=0) και η λεξη δεν ειναι αποδεκτη
-                    self.v=0
-            if self.v:
+            self.v = 1
+            for i in self.word:  # αν καποιο γραμμα της λεξης δν ανηκει στην λιστα τοτε (v=0) και η λεξη δεν ειναι αποδεκτη
+                if i not in alist:
+                    self.v = 0
+                    break
+            if self.v == 1:
                 if self.word in wordsd.keys() :  # Αν η λεξη υπαρχει και δεν εχει ξανα χρησιμοποιηθει
-                    print("Αποδεκτη λεξη")
-                    #wordsd[self.w][1] += 1
-                    # προσθηκη ποντων
+                    if wordsd[self.word] == 0:
+                        print("Αποδεκτη λεξη")
+                        wordsd[self.word] = 1
+                        #print(wordsd)
+                    else:
+                        self.word = 'lost'
+                        print("Η λεξη εχει ξανα χρησιμοποιηθει.")
                 else:
-                    print("μη αποδεκτη λεξη,χανεισ την σειρα σου")  # αν η λεξη δεν υπαρχει
+                    print("Η λεξη δεν υπαρχει , χανεισ την σειρα σου")  # αν η λεξη δεν υπαρχει
                     self.word = 'lost'
             else:
                 print("μη αποδεκτη λεξη,χανεισ την σειρα σου")  # αν η έξη δεν ειναι valid , περιεχει κ αλλους χαρακτηρες εκτος απο αυτους της λιστας
@@ -353,9 +357,11 @@ class Game:
         self.pc = Computer()
         self.sack = SackClass()
         self.validW = wordsd
+        self.onewordp = 0  # οι ποντοι της συγκεκριμενης λέξης
         self.scoreH = 0
         self.scoreC = 0
         self.gyros = 0
+        self.length = 0
 
     def __repr__(self):
         return "Game instance"
@@ -374,18 +380,20 @@ class Game:
         print("*  3: ΠΑΙΧΝΙΔΙ            *")
         print("*  q: ΕΞΟΔΟΣ              *")
         print(14 * "* ")
-        print("Για να δεις αναλυτικα τα σεναρια παιχνιδου πάτα 2 πριν ξεκινησεις το παιχνιδι1")
+        print("Για να δεις αναλυτικα τα σεναρια παιχνιδου πάτα 2 πριν ξεκινησεις το παιχνιδι!")
         self.a = input("-> ") #Επιλογη του χρηστη με β αση το μενου
 
     def run(self):
         while self.a != "q" or "Q":
             if self.a == "1": #σκορ
+                print("ΣΚΟΡ ΧΡΗΣΤΩΝ:")
                 with open("score.txt", 'r') as f:
                     print(f.read())
             elif self.a == "2":  #πληροφοριες
                 pass
             elif self.a == "3":  #παιχνιδι
                 self.l = self.sack.randomizesack() #λιστα π περιεχει ολα τα γραμματα
+                self.length=len(self.l)
                 #print(self.l)
                 print("Υπάρχουν 2 είδη παιχνιδιού, Διάλεξε ποιο προτιμάς:")
                 print(10 * "-")
@@ -396,16 +404,24 @@ class Game:
                 self.stop = 0
                 if self.b == "A" or self.b == "a" or self.b == "Α" or self.b == "α" or self.b == "B" or self.b == "b" or self.b == "Β" or self.b == "β":
                     print("ΕΝΑΡΞΗ ΠΑΙΧΝΙΔΙΟΥ")
-                    while len(self.l) != 0 and self.stop == 0:
+                    print("Αρχικα υπαρχουν",self.length,"γραμματα στο σακουλακι")
+                    while self.length != 0 and self.stop == 0:
                         self.gyros +=1
+                        print("Γυρος",self.gyros )
                         self.let = self.sack.getletters() #επιλεγονται 7 τυχαια γραμματα
+                        self.length -= 7
                         self.w = self.ph.play(self.let)  # παιζει ο παικτης
                         #print("H Λεξη " +self.w)
                         if self.w == 'lost':
+                            self.onewordp = 0 # οι ποντοι της συγκεκριμενης λέξης
                             print('Μη αποδεκτη λεξη')
+                            print("Οι ποντοι σου τωρα:", self.onewordp,"       ", "Οι ποντοι σου συνολικκα:", self.scoreH)
                         elif self.w == 'π' or self.w == 'Π':
+                            self.onewordp = 0 # οι ποντοι της συγκεκριμενης λέξης
                             print(" Πηγες πάσο , χανεις την σειρά σου")
+                            print("Οι ποντοι σου τωρα:", self.onewordp,"       ", "Οι ποντοι σου συνολικκα:", self.scoreH)
                             self.sack.putbackletters(self.let)
+                            self.length +=7
                         else:
                             print("Η ΛΕΞΗ ΣΟΥ: ")
                             print(self.w)
@@ -421,6 +437,7 @@ class Game:
                         print("ΣΕΙΡΑ ΤΟΥ ΥΠΟΛΟΓΙΣΤΗ")
                         if self.b == "A" or self.b == "a" or self.b == "Α" or self.b == "α":
                             self.let = self.sack.getletters() #γραμματα για τον υπολ
+                            self.length -= 7
                             self.wordcomp = self.pc.play(self.b, self.let)
                             print("Ο υπολογιστης επαιξε:")
                             print(self.wordcomp)
@@ -442,14 +459,20 @@ class Game:
                             print("Οι ποντοι του υπολογιστη τωρα:", self.pointsc, "       ", "Οι ποντοι του υπολογιστη συνολικκα:", self.scoreC)
                         print("--------------------------")
                         print("Ο",self.gyros,"ος", "γυρος τελειωσε!")
+                        print("Εχουν μεινει",self.length,"γραμματα στο σακουλακι")
+                        print("--------------------------")
+                        if self.length<7:
+                            self.length = 0
                         print("Συνεχίζεις? Ν(αι)/Ο(χι)")
                         self.n_o = input("->")
                         print("--------------------------")
-                        if self.n_o == "N":
-                            self.stop = 0
-                        else:
+                        if self.n_o == "Ο":
                             self.stop = 1
-                            print("Ευχαριστουμε που επαιξες!")
+
+                    else:
+                        print("Ευχαριστουμε που επαιξες!")
+                        self.end()
+
                 else:
                     print("Wrong Input")
                     print("Α. *Σεναριο α*")
@@ -474,8 +497,9 @@ class Game:
                 self.c = input("-> ")
 
     def end(self):
-        pass #το τελικο σκορ τ παικτη γραφεται στο αρχειο score και όλα τα γραμματα γυρνανε στο σακουλακι
-
+        with open("score.txt", 'a') as f:
+            f.write(self.ph.get_name()+" "+ str(self.scoreH) )#το τελικο σκορ τ παικτη γραφεται στο αρχειο score και όλα τα γραμματα γυρνανε στο σακουλακι
+            f.close()
 
 # ###main###
 
