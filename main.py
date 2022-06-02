@@ -2,6 +2,14 @@ import random as ran
 import itertools as it
 
 
+class guidline():
+    def __init__(self):
+        """
+        nnnl
+        """
+
+
+
 class Player:
     def __init__(self):
         self.score = 0
@@ -30,8 +38,8 @@ class Human(Player):
     def get_name(self):
         return self.name
 
-    def play(self,alist,):
-        print("your turn:")
+    def play(self,alist):
+        print("Η σειρα σου:")
         print("Τα γραμματα που έχεις είναι αυτα: ")
         print(alist)
         print("Γραψε την λέξη σου ή πάτα Π/π για Πασο")
@@ -45,9 +53,9 @@ class Human(Player):
                 else:  # αν καποιο γραμμα της λεξης δν ανηκει στην λιστα τοτε (v=0) και η λεξη δεν ειναι αποδεκτη
                     self.v=0
             if self.v:
-                if self.word in wordsd.keys() and wordsd[self.word][1] == 0:  # Αν η λεξη υπαρχει και δεν εχει ξανα χρησιμοποιηθει
+                if self.word in wordsd.keys() :  # Αν η λεξη υπαρχει και δεν εχει ξανα χρησιμοποιηθει
                     print("Αποδεκτη λεξη")
-                    wordsd[self.w][1] += 1
+                    #wordsd[self.w][1] += 1
                     # προσθηκη ποντων
                 else:
                     print("μη αποδεκτη λεξη,χανεισ την σειρα σου")  # αν η λεξη δεν υπαρχει
@@ -60,13 +68,205 @@ class Human(Player):
 
 class Computer(Player):
     def __init__(self):
-        pass
+        self.sackA = SackClass()
 
     def __repr__(self):
         return "computer instance"
 
-    def play(self):  # smart-fail
-        pass
+    def play(self,senario,alist):  # smart-fail #MIN MAX SMART #ποιο σεναριο εχει επιλεξει
+        print("Εχεις επιλέξει το", senario, "για να πάιξει ο υπολογιστής")
+        print("Τα γραμματα που έχει ο υπολογιστης ειναι αυτά:")
+        print(alist)
+        if senario == "A" or senario == "a" or senario == "Α" or senario == "α":
+            print("Επελεξε: ")
+            print("Α: Μεθοδο για MIN LETTERS")
+            print("B: Μεθδοδο για MAX LETTERS")
+            print("Γ: Μεθοδο για SMART")
+            self.dec= input("-> ")
+            if self.dec == "Α":
+                self.blist = []
+                for i in it.permutations(alist, 2):
+                    mystring = ""
+                    for x in i:
+                        mystring += x
+                        if len(mystring) == 2:
+                            if mystring not in self.blist:
+                                self.blist.append(mystring)
+                        else:
+                            continue
+                for i in it.permutations(alist, 3):
+                    mystring = ""
+                    for x in i:
+                        mystring += x
+                        if len(mystring) == 3:
+                            if mystring not in self.blist:
+                                self.blist.append(mystring)
+                        else:
+                            continue
+                for i in it.permutations(alist, 4):
+                    mystring = ""
+                    for x in i:
+                        mystring += x
+                        if len(mystring) == 4:
+                            if mystring not in self.blist:
+                                self.blist.append(mystring)
+                        else:
+                            continue
+                for i in it.permutations(alist, 5):
+                    mystring = ""
+                    for x in i:
+                        mystring += x
+                        if len(mystring) == 5:
+                            if mystring not in self.blist:
+                                self.blist.append(mystring)
+                        else:
+                            continue
+                for i in it.permutations(alist, 6):
+                    mystring = ""
+                    for x in i:
+                        mystring += x
+                        if len(mystring) == 6:
+                            if mystring not in self.blist:
+                                self.blist.append(mystring)
+                        else:
+                            continue
+                for i in it.permutations(alist, 7):
+                    mystring = ""
+                    for x in i:
+                        mystring += x
+                        if len(mystring) == 7:
+                            if mystring not in self.blist:
+                                self.blist.append(mystring)
+                        else:
+                            continue
+                # print(blist)
+                for i in self.blist:
+                    if i in wordsl:
+                        return i  # επιστρεφει την πρωτη λεξη που δεχθηκε ως πιθανη λυση με τα λιγοτερα γραμματα
+                    else:
+                        self.blist.remove(i)
+            elif self.dec =="Β":
+                self.blist = []
+                for i in it.permutations(alist, 7):
+                    mystring = ""
+                    for x in i:
+                        mystring += x
+                        if len(mystring)==7:
+                            if mystring not in self.blist:
+                                self.blist.append(mystring)
+                        else:
+                            continue
+                for i in it.permutations(alist, 6):
+                    mystring = ""
+                    for x in i:
+                        mystring += x
+                        if len(mystring) == 6:
+                            if mystring not in self.blist:
+                                self.blist.append(mystring)
+                        else:
+                            continue
+                for i in it.permutations(alist, 5):
+                    mystring = ""
+                    for x in i:
+                        mystring += x
+                        if len(mystring) == 5:
+                            if mystring not in self.blist:
+                                self.blist.append(mystring)
+                        else:
+                            continue
+                for i in it.permutations(alist, 4):
+                    mystring = ""
+                    for x in i:
+                        mystring += x
+                        if len(mystring) == 4:
+                            if mystring not in self.blist:
+                                self.blist.append(mystring)
+                        else:
+                            continue
+                for i in it.permutations(alist, 3):
+                    mystring = ""
+                    for x in i:
+                        mystring += x
+                        if len(mystring) == 3:
+                            if mystring not in self.blist:
+                                self.blist.append(mystring)
+                        else:
+                            continue
+                for i in it.permutations(alist, 2):
+                    mystring = ""
+                    for x in i:
+                        mystring += x
+                        if len(mystring) == 2:
+                            if mystring not in self.blist:
+                                self.blist.append(mystring)
+                        else:
+                            continue
+                #print(self.blist)
+                for i in self.blist:
+                    if i in wordsl:
+                       return i  # επιστρεφει την πρωτη λεξη που δεχθηκε ως πιθανη λυση με τα περισσοτερα γραμματα
+                    else:
+                        self.blist.remove(i)
+
+            else:
+                self.blist = []
+                self.wordvalue=[]
+                self.value=0
+                for i in it.permutations(alist, 7):
+                    mystring = ""
+                    for x in i:
+                        mystring += x
+                        if len(mystring) == 1:
+                            continue
+                        else:
+                            if mystring not in self.blist and mystring in wordsl:
+                                self.blist.append(mystring)
+                                #print(self.blist)
+                                for i in mystring:
+                                    self.value += self.sackA.getvalueofletter(i)
+                                self.wordvalue.append(self.value)
+                                self.value = 0
+                                #print(self.wordvalue)
+                #print(self.blist)
+                self.m = max(self.wordvalue) #βρισκει το max απο τους ποντουσ
+                self.ind = self.wordvalue.index(self.m) #βρικσει την θεση του max
+                return self.blist[self.ind]
+        else:
+            print("ΣΕΝΑΡΙΟ Β") # SMART FAIL
+            self.blist = []
+            self.wordvalue = []
+            self.value = 0
+            for i in it.permutations(alist, 7):
+                mystring = ""
+                for x in i:
+                    mystring += x
+                    if len(mystring) == 1:
+                        continue
+                    else:
+                        if mystring not in self.blist and mystring in wordsl:
+                            self.blist.append(mystring)
+                            #print(self.blist)
+                            for i in mystring:
+                                self.value += self.sackA.getvalueofletter(i)
+                            self.wordvalue.append(self.value)
+                            self.value = 0
+                            #print(self.wordvalue)
+            # print(self.blist)
+            self.ziplist = zip(self.wordvalue,self.blist)
+            self.sortedp= sorted(self.ziplist)
+            self.tuples= zip(*self.sortedp)
+            self.wordvalue, self.blist =[ list(tuple) for tuple in self.tuples]
+            print(self.blist)
+            print(self.wordvalue)
+            self.m = max(self.wordvalue)
+            self.ind = self.wordvalue.index(self.m)
+            for i in range(self.ind,0,-1):
+                #print("fffff")
+                if self.wordvalue[i]<self.m:
+                    #print("gggg")
+                    return self.blist[i], self.wordvalue[i]
+
+
 
 
 class SackClass:
@@ -155,6 +355,7 @@ class Game:
         self.validW = wordsd
         self.scoreH = 0
         self.scoreC = 0
+        self.gyros = 0
 
     def __repr__(self):
         return "Game instance"
@@ -173,29 +374,32 @@ class Game:
         print("*  3: ΠΑΙΧΝΙΔΙ            *")
         print("*  q: ΕΞΟΔΟΣ              *")
         print(14 * "* ")
+        print("Για να δεις αναλυτικα τα σεναρια παιχνιδου πάτα 2 πριν ξεκινησεις το παιχνιδι1")
         self.a = input("-> ") #Επιλογη του χρηστη με β αση το μενου
 
     def run(self):
         while self.a != "q" or "Q":
-            if self.a == "1":
+            if self.a == "1": #σκορ
                 with open("score.txt", 'r') as f:
                     print(f.read())
-            elif self.a == "2":
+            elif self.a == "2":  #πληροφοριες
                 pass
-            elif self.a == "3":
+            elif self.a == "3":  #παιχνιδι
                 self.l = self.sack.randomizesack() #λιστα π περιεχει ολα τα γραμματα
                 #print(self.l)
                 print("Υπάρχουν 2 είδη παιχνιδιού, Διάλεξε ποιο προτιμάς:")
                 print(10 * "-")
                 print("Α. *Σεναριο α*")
-                print("B. *Senafrio b*")
+                print("B. *Σεναριο β*")
                 print(10 * "-")
                 self.b = input("-> ")
-                if self.b == "A" or self.b == "a" or self.b == "Α" or self.b == "α":
-                    print("Σεναριο Α : ΕΝΑΡΞΗ ΠΑΙΧΝΙΔΙΟΥ")
-                    while len(self.l) != 0:
+                self.stop = 0
+                if self.b == "A" or self.b == "a" or self.b == "Α" or self.b == "α" or self.b == "B" or self.b == "b" or self.b == "Β" or self.b == "β":
+                    print("ΕΝΑΡΞΗ ΠΑΙΧΝΙΔΙΟΥ")
+                    while len(self.l) != 0 and self.stop == 0:
+                        self.gyros +=1
                         self.let = self.sack.getletters() #επιλεγονται 7 τυχαια γραμματα
-                        self.w = self.ph.play(self.let)  # παιζει ο
+                        self.w = self.ph.play(self.let)  # παιζει ο παικτης
                         #print("H Λεξη " +self.w)
                         if self.w == 'lost':
                             print('Μη αποδεκτη λεξη')
@@ -205,34 +409,51 @@ class Game:
                         else:
                             print("Η ΛΕΞΗ ΣΟΥ: ")
                             print(self.w)
+                            self.onewordp = 0 # οι ποντοι της συγκεκριμενης λέξης
                             print("ΟΙ ΠΟΝΤΟΙ ΣΟΥ: ")
                             self.wordlist = []
                             self.wordlist[:0] = self.w
                             for i in self.wordlist:
-                                self.scoreH += self.sack.getvalueofletter(i)
-                            print(self.scoreH)
-                            """""
-                            sum=0
-                            alist= ['Σ','Κ','Ρ','Α','Μ','Π','Λ']
-                            for i in alist:
-                                for j in dict:
-                                    if i == j:
-                                        sum += dict[j][1]  # increse_score()
-                            #print(sum)
-                            """
-                        print("Computer's turn")
-                        #self.let = self.sack.getletters()
-                        #self.w = self.pc.play()
-
-
-
-
-                elif b == "B" or b == "b" or b == "Β" or b == "β":
-                    pass
+                                self.onewordp += self.sack.getvalueofletter(i)
+                            self.scoreH+=self.onewordp # οι συνολικοι ποντοι του χρηστη
+                            print("Οι ποντοι σου τωρα:", self.onewordp,"       ", "Οι ποντοι σου συνολικκα:", self.scoreH)
+                        print("--------------------------------------------------------------------------------")
+                        print("ΣΕΙΡΑ ΤΟΥ ΥΠΟΛΟΓΙΣΤΗ")
+                        if self.b == "A" or self.b == "a" or self.b == "Α" or self.b == "α":
+                            self.let = self.sack.getletters() #γραμματα για τον υπολ
+                            self.wordcomp = self.pc.play(self.b, self.let)
+                            print("Ο υπολογιστης επαιξε:")
+                            print(self.wordcomp)
+                            print("ΠΟΝΤΟΙ ΤΟΥ ΥΠΟΛΟΓΙΣΤΗ: ")
+                            self.wordlist = []
+                            self.wordlist[:0] = self.wordcomp
+                            self.onewordp = 0
+                            for i in self.wordlist:
+                                self.onewordp += self.sack.getvalueofletter(i)
+                            self.scoreC += self.onewordp
+                            print("Οι ποντοι του υπολογιστη τωρα:", self.onewordp, "       ", "Οι ποντοι του υπολογιστη συνολικκα:", self.scoreC)
+                        elif self.b == "Β" or self.b == "β" or self.b == "B" or self.b == "b":
+                            self.let = self.sack.getletters()  # γραμματα για τον υπολ
+                            self.wordcomp,self.pointsc = self.pc.play(self.b, self.let)
+                            self.scoreC+=self.pointsc
+                            print("Ο υπολογιστης επαιξε:")
+                            print(self.wordcomp)
+                            print("ΠΟΝΤΟΙ ΤΟΥ ΥΠΟΛΟΓΙΣΤΗ: ")
+                            print("Οι ποντοι του υπολογιστη τωρα:", self.pointsc, "       ", "Οι ποντοι του υπολογιστη συνολικκα:", self.scoreC)
+                        print("--------------------------")
+                        print("Ο",self.gyros,"ος", "γυρος τελειωσε!")
+                        print("Συνεχίζεις? Ν(αι)/Ο(χι)")
+                        self.n_o = input("->")
+                        print("--------------------------")
+                        if self.n_o == "N":
+                            self.stop = 0
+                        else:
+                            self.stop = 1
+                            print("Ευχαριστουμε που επαιξες!")
                 else:
                     print("Wrong Input")
                     print("Α. *Σεναριο α*")
-                    print("B. *Senafrio b*")
+                    print("B. *Σεναριο β*")
                     print(10 * "-")
                     b = input("-> ")
             elif self.a == "q" or self.a == "Q":
@@ -283,7 +504,7 @@ wordsd= {}
 with open("greek7.txt","r") as f7:
     for line in f7:
         wordsd[line.strip('\n')]= 0
-print(wordsd.keys())
+#print(wordsd.keys())
 
 
 #  Δημιουργια SakClass instant
@@ -294,6 +515,7 @@ game.setup()
 game.run()
 
 
+#and wordsd[self.word][1] == 0
 
 """""
 alist = ["Α","Ε","Δ","Σ","Γ","Ο","Ο"]
@@ -314,8 +536,7 @@ for i in blist:
 
 
 # json or pickle ??
-"""
-
+"""""
 
 
 """""
@@ -417,3 +638,12 @@ while a != "q" or "Q":
                 self.letters[12][0]-= 1
 
 """
+"""""
+                           sum=0
+                           alist= ['Σ','Κ','Ρ','Α','Μ','Π','Λ']
+                           for i in alist:
+                               for j in dict:
+                                   if i == j:
+                                       sum += dict[j][1]  # increse_score()
+                           #print(sum)
+                           """
